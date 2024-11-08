@@ -1,70 +1,15 @@
 pipeline {
-agent any
-stages {
-stage('Get Student Details') {
-steps {
-script {
-// Prompt user for inputs
-def userInput = input(
-message: 'Please enter student details and marks',
-parameters: [
-string(name: 'STUDENT_NAME', defaultValue:
-'', description: 'Enter the student\'s name'),
-string(name: 'ROLL_NUMBER', defaultValue: '',
-description: 'Enter the student\'s roll number'),
-string(name: 'CLASS', defaultValue: '',
-description: 'Enter the student\'s class'),
-string(name: 'SUBJECT1_MARKS',
-defaultValue: '0', description: 'Enter marks for Subject 1'),
-string(name: 'SUBJECT2_MARKS',
-defaultValue: '0', description: 'Enter marks for Subject 2')
-]
-)
-// Access the user input values
-def studentName = userInput.STUDENT_NAME
-def rollNumber = userInput.ROLL_NUMBER
-def className = userInput.CLASS
-def subject1Marks =
-userInput.SUBJECT1_MARKS.toInteger()
-def subject2Marks =
-userInput.SUBJECT2_MARKS.toInteger()
-// Display the entered details
-echo "Student Name: ${studentName}"
-echo "Roll Number: ${rollNumber}"
-echo "Class: ${className}"
-echo "Marks in Subject 1: ${subject1Marks}"
-echo "Marks in Subject 2: ${subject2Marks}"
-// Store the inputs in environment variables to use in
-other stages
-env.STUDENT_NAME = studentName
-env.ROLL_NUMBER = rollNumber
-env.CLASS = className
-env.SUBJECT1_MARKS = subject1Marks.toString()
-env.SUBJECT2_MARKS = subject2Marks.toString()
-}
-}
-}
-stage('Calculate Aggregate') {
-steps {
-script {
-// Retrieve marks from environment variables
-def subject1Marks =
-env.SUBJECT1_MARKS.toInteger()
-def subject2Marks =
-env.SUBJECT2_MARKS.toInteger()
-// Calculate total and average
-def totalMarks = subject1Marks + subject2Marks
-def aggregate = totalMarks / 2
-// Display the results
-echo "Total Marks: ${totalMarks}"
-echo "Aggregate (Average) Marks: ${aggregate}"
-}
-}
-}
-}
-post {
-always {
-echo 'Calculation complete.'
-}
-}
+    agent any
+
+    parameters {
+        string(name: 'NAME', defaultValue: 'World', description: 'Enter your name')
+    }
+
+    stages {
+        stage('Say Hello') {
+            steps {
+                echo "Hello, ${params.NAME}!"
+            }
+        }
+    }
 }
